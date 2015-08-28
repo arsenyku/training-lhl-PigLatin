@@ -37,7 +37,7 @@
     if ([self isEqualToString:@""])
         return self;
     
-    long cutOff = [self length]-1;
+    long cutOff = [self length];
     
     for(long i = [self length]-1; i >= 0; i--){
         NSString *characterToEvaluate = [[self substringFromIndex:i] substringToIndex:1];
@@ -51,9 +51,7 @@
             break;
     }
     
-    if (cutOff < 0)
-        return @"";
-    else
-	    return [self substringToIndex:cutOff];
+
+    return [self substringToIndex:cutOff];
 }
 @end
