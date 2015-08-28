@@ -15,9 +15,14 @@ int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
         NSString *testString = @"Kale Chips Are Awesome";
-        
         NSLog(@"%@", [testString stringByPigLatinization]);
 
+        testString = @"";
+        NSLog(@"-%@-", [testString stringByPigLatinization]);
+        
+        testString = @"a b c d e";
+        NSLog(@"-%@-", [testString stringByPigLatinization]);
+        
     }
     return 0;
 }

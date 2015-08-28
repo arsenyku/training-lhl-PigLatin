@@ -12,15 +12,15 @@
 @implementation NSString(PigLatin)
 
 -(NSString *)stringByPigLatinization{
+    if ([self isEqualToString:@""])
+        return @"";
+    
     NSCharacterSet *spaceAndPunctuation =
     [[NSCharacterSet whitespaceCharacterSet]
      unionWithCharacterSet:[NSCharacterSet punctuationCharacterSet]];
     
-    NSString *consonants = @"bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
     NSString *vowels = @"aeiouAEIOU";
 
-    NSCharacterSet *consonantsSet = [NSCharacterSet
-                                     characterSetWithCharactersInString:consonants];
     NSCharacterSet *vowelSet = [NSCharacterSet
                                      characterSetWithCharactersInString:vowels];
     
@@ -29,22 +29,35 @@
     NSMutableArray *pigLatinComponents = [@[] mutableCopy];
     
     for (NSString* component in components) {
-        NSString *pigLatinizedWord =
-	        [[component stringByTrimmingStartingCharactersWithCharacterSet:consonantsSet] mutableCopy];
         
-        
-        NSString *portionToMove = [component substringToIndex:[component length] - [pigLatinizedWord length]];
-        
-        NSString *firstChar = [component substringToIndex:1];
-        NSRange range = [firstChar rangeOfCharacterFromSet:vowelSet options:NSLiteralSearch];
+        NSString* pigLatinizedWord = component;
+        NSString *portionToMove = @"";
+        NSString *ending = @"";
 
-        NSString *ending = @"ay";
-        if (range.length > 0)
+        
+        // find first vowel
+        NSRange firstVowel = [component rangeOfCharacterFromSet:vowelSet options:NSLiteralSearch];
+        
+        if (firstVowel.length > 0){
+            // Starts with vowel
             ending = @"way";
-
-        pigLatinizedWord = [NSString stringWithFormat:@"%@%@%@", pigLatinizedWord, portionToMove, ending];
+        }else{
+        	// Move consonants
+            if (firstVowel.location < [component length]){
+	            pigLatinizedWord = [component substringFromIndex:firstVowel.location];
+	            portionToMove = [component substringToIndex:firstVowel.location];
+            }
+            ending = @"ay";
+        }
+        
+        pigLatinizedWord = [[NSString stringWithFormat:@"%@%@%@", pigLatinizedWord, portionToMove, ending] lowercaseString];
+        
+        NSString *firstChar = [[pigLatinizedWord substringToIndex:1] uppercaseString];
+        pigLatinizedWord = [NSString stringWithFormat:@"%@%@",firstChar, [pigLatinizedWord substringFromIndex:1]];
+        
         [pigLatinComponents addObject:pigLatinizedWord];
     }
+    
     return [pigLatinComponents componentsJoinedByString:@" "] ;
 }
 
