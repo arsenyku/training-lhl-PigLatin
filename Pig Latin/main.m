@@ -9,61 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "NSCharacterSet+UnionWithOtherSet.h"
 #import "NSString+TrimmingUtilities.h"
-
+#import "NSString+PigLatin.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
-
-        NSCharacterSet* consonantsSet =
-        [NSCharacterSet characterSetWithCharactersInString:
-         @"BCDFGHJKLMNPQRSTVWXYZbcdfghjklmnpqrstvwxyz"];
         
-        NSCharacterSet* vowelsSet =
-        [NSCharacterSet characterSetWithCharactersInString:
-         @"aeiouAEIOU"];
+        NSString *testString = @"Kale Chips Are Awesome";
         
-        
-        NSString *myString = @"BCBCBCBaeiouDSFASF";
-        myString = [myString stringByTrimmingStartingCharactersWithCharacterSet:consonantsSet];
-        
-        NSLog(@"%@",myString);
-
-        
-        myString = @"aoaoaoaoBCBCBCBaeiouDSFASF";
-        myString = [myString stringByTrimmingStartingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"%@",myString);
-
-        myString = @"BCBCBCBaeiouDSFASF";
-        myString = [myString stringByTrimmingStartingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"%@",myString);
-        
-        myString = @"aeeoo";
-        myString = [myString stringByTrimmingStartingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"-%@-",myString);
-        
-        myString = @"BBCCDDSaeeoo";
-        myString = [myString stringByTrimmingTrailingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"-%@-",myString);
-        
-        myString = @"BBCCDDS";
-        myString = [myString stringByTrimmingTrailingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"-%@-",myString);
-        
-        myString = @"aeiou";
-        myString = [myString stringByTrimmingTrailingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"-%@-",myString);
-        
-        myString = @"";
-        myString = [myString stringByTrimmingTrailingCharactersWithCharacterSet:vowelsSet];
-        
-        NSLog(@"-%@-",myString);
-        
+        NSLog(@"%@", [testString stringByPigLatinization]);
 
     }
     return 0;

@@ -7,6 +7,7 @@
 //
 
 #import "NSString+PigLatin.h"
+#import "NSString+TrimmingUtilities.h"
 
 @implementation NSString(PigLatin)
 
@@ -17,22 +18,34 @@
     
     NSString *consonants = @"bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
     NSString *vowels = @"aeiouAEIOU";
-    
+
     NSCharacterSet *consonantsSet = [NSCharacterSet
                                      characterSetWithCharactersInString:consonants];
-    NSCharacterSet *vowelsSet = [NSCharacterSet
-                                 characterSetWithCharactersInString:vowels];
+    NSCharacterSet *vowelSet = [NSCharacterSet
+                                     characterSetWithCharactersInString:vowels];
+    
     
     NSArray *components = [self componentsSeparatedByCharactersInSet:spaceAndPunctuation];
     NSMutableArray *pigLatinComponents = [@[] mutableCopy];
     
     for (NSString* component in components) {
-        NSMutableString *pigLatinized = [[component stringByTrimmingCharactersInSet:consonantsSet] mutableCopy];
+        NSString *pigLatinizedWord =
+	        [[component stringByTrimmingStartingCharactersWithCharacterSet:consonantsSet] mutableCopy];
         
         
-        return self;
+        NSString *portionToMove = [component substringToIndex:[component length] - [pigLatinizedWord length]];
+        
+        NSString *firstChar = [component substringToIndex:1];
+        NSRange range = [firstChar rangeOfCharacterFromSet:vowelSet options:NSLiteralSearch];
+
+        NSString *ending = @"ay";
+        if (range.length > 0)
+            ending = @"way";
+
+        pigLatinizedWord = [NSString stringWithFormat:@"%@%@%@", pigLatinizedWord, portionToMove, ending];
+        [pigLatinComponents addObject:pigLatinizedWord];
     }
-    return self;
+    return [pigLatinComponents componentsJoinedByString:@" "] ;
 }
 
 @end
